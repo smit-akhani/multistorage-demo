@@ -1,0 +1,19 @@
+<div id="<%= dom_id product %>">
+  <div class="card-body">
+    <p class="card-title h6 color-grey">
+      <%= product.name %>
+    </p>
+
+    <p class="card-text">
+      <% if product.images.attached? %>
+        <% (product.images).each do |image| %>
+          <div><%= image_tag (image), style: "height:10vw;width:10vw;" if product.images.attached? %></div>
+          <div><%= link_to image.filename, image %></div>
+        <% end %>
+      <% else %>
+        <p>No images attached</p>
+      <% end %>
+      <%= link_to "Show this product", product %>
+    </p>
+  </div>
+</div>

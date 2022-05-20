@@ -1,0 +1,19 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Products</h1>
+<% if @products.empty? %>
+  <p>No products found. Please add one</p>
+<% else %>
+  <div class="d-flex flex-row align-items-start align-self-start" id="products">
+    <% @products.each do |product| %>
+      <div class="card m-2">
+        <%= render product %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<br/>
+<div>
+  <p>Add new product:</p>
+  <%= render 'form' %>
+</div>
