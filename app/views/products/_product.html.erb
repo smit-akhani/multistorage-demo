@@ -8,11 +8,25 @@
       <% if product.images.attached? %>
         <% (product.images).each do |image| %>
           <div><%= image_tag (image), style: "height:10vw;width:10vw;" if product.images.attached? %></div>
-          <div><%= link_to image.filename, image %></div>
+          <div><%= link_to "View Picture", image %></div>
         <% end %>
       <% else %>
         <p>No images attached</p>
       <% end %>
+      
+      <% if product.doc.attached? %>
+        <% if product.doc.representable? %>
+          <%= image_tag product.doc.representation(resize_to_limit: [100, 100]) %>
+          <div><%= link_to "View document", product.doc %></div>
+        <% else %>
+          <%= link_to rails_blob_path(product.doc, disposition: "attachment") do %>
+            <%= image_tag "placeholder.png", alt: "Download file" %>
+          <% end %>
+        <% end %>
+      <% end %>
+    
+    </p>
+    <p> 
       <%= link_to "Show this product", product %>
     </p>
   </div>
