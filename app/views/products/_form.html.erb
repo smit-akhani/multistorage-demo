@@ -18,14 +18,14 @@
 
   <div>
     <%= form.label :images, style: "display: block" %>
-    <%= form.file_field :images, multiple: true %>
+    <%= form.file_field :images, multiple: true, accept: ".png, .jpg" %>
   </div>
 
   <div>
     <%= form.label :doc, style: "display: block" %>
-    <%= form.file_field :doc %>
+    <%= form.file_field :doc, accept: ".pdf, .mp4, .avi, .mkv" %>
   </div>
-
+  
   <div>
     <%= form.submit %>
   </div>
