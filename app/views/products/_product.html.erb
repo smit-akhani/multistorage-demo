@@ -19,7 +19,7 @@
       
       <% if product.doc.attached? %>
         <% if product.doc.representable? %>
-          <%= image_tag product.doc.representation(resize_to_limit: [100, 100]) %>
+          <%= image_tag product.doc.representation(resize_to_limit: [100, 100]), class: "border border-secondary" if product.doc.attached? %>
           <div><%= link_to "View document", rails_blob_path(product.doc, disposition: "preview") %></div>
           <div><%= link_to "Download document", rails_blob_path(product.doc, disposition: "attachment") %></div>
         <% else %>
@@ -27,6 +27,8 @@
             <%= image_tag "", alt: "Download file" %>
           <% end %>
         <% end %>
+      <% else %>
+        <p>No doc attached</p>
       <% end %>
     
     </p>
