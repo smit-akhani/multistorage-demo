@@ -22,14 +22,20 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
-    respond_to do |format|
-      if @product.save
-        format.html { redirect_to product_url(@product), notice: "Product was successfully created." }
-        format.json { render :show, status: :created, location: @product }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+    if !check_image_type
+      redirect_to products_path, notice: "Image type must be png or jpg."
+    elsif !check_doc_type
+      redirect_to products_path, notice: "Doc type must be pdf."
+    else
+      @product = Product.new(product_params)
+      respond_to do |format|
+        if @product.save
+          format.html { redirect_to product_url(@product), notice: "Product was successfully created." }
+          format.json { render :show, status: :created, location: @product }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @product.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -66,5 +72,21 @@ class ProductsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def product_params
       params.require(:product).permit(:name, :doc, images: [])
+    end
+
+    def check_image_type
+      params[:product][:images].shift
+      params[:product][:images].each_index do |ele|
+        return false unless !params[:product][:images][ele].nil? && ((params[:product][:images][ele]).content_type == "image/jpeg" || (params[:product][:images][ele]).content_type == "image/png") 
+      end
+      return true
+    end
+
+    def check_doc_type
+      if !params[:product][:doc].nil? && !params[:product][:doc].content_type == "application/pdf"
+        return false
+      else
+        return true
+      end
     end
 end
