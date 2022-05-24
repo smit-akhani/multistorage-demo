@@ -42,13 +42,19 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to product_url(@product), notice: "Product was successfully updated." }
-        format.json { render :show, status: :ok, location: @product }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+    if !check_image_type
+      redirect_to products_path, notice: "Image type must be png or jpg."
+    elsif !check_doc_type
+      redirect_to products_path, notice: "Doc type must be pdf."
+    else
+      respond_to do |format|
+        if @product.update(product_params)
+          format.html { redirect_to product_url(@product), notice: "Product was successfully updated." }
+          format.json { render :show, status: :ok, location: @product }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @product.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
